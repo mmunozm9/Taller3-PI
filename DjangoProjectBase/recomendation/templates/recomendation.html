@@ -1,0 +1,74 @@
+{% extends 'base.html' %} 
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Movie Recommendation System</h2>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Find Your Perfect Movie</h4>
+            <p class="card-text">Tell us what kind of movie you're looking for, and we'll recommend something just for you.</p>
+            
+            <form action="{% url 'recomendation' %}" method="get">
+                <div class="mb-3">
+                    <label for="prompt" class="form-label">What kind of movie are you looking for?</label>
+                    <input type="text" class="form-control" id="prompt" name="prompt" 
+                        placeholder="Example: World War II movie, sci-fi adventure, romantic comedy in Paris" 
+                        value="{{ prompt|default:'' }}">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Get Recommendation</button>
+            </form>
+        </div>
+    </div>
+    
+    {% if prompt %}
+    <div class="alert alert-info mb-4">
+        <i class="bi bi-search"></i> Looking for movies similar to: <strong>{{ prompt }}</strong>
+    </div>
+    
+    {% if movie %}
+    <div class="card mb-4 shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Recommended for You</h3>
+        </div>
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ movie.image.url }}" class="img-fluid rounded-start h-100 object-fit-cover" alt="{{ movie.title }}" style="object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h3 class="card-title mb-3">{{ movie.title }}</h3>
+                    <p class="card-text">{{ movie.description }}</p>
+                    
+                    <div class="row mb-3">
+                        {% if movie.genre %}
+                        <div class="col-md-6">
+                            <p class="card-text"><strong>Genre:</strong> {{ movie.genre }}</p>
+                        </div>
+                        {% endif %}
+                        
+                        {% if movie.year %}
+                        <div class="col-md-6">
+                            <p class="card-text"><strong>Year:</strong> {{ movie.year }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    {% if movie.url %}
+                    <a href="{{ movie.url }}" class="btn btn-primary" target="_blank">
+                        <i class="bi bi-film"></i> Watch Trailer
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle"></i> No movies match your criteria. Try a different search term.
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+
+{% endblock content %}

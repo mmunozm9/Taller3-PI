@@ -14,8 +14,8 @@ class Command(BaseCommand):
         client = OpenAI(api_key=os.environ.get('openai_apikey'))
 
         # ✅ Change these titles for any movies you want to compare
-        movie1 = Movie.objects.get(title="La captura")
-        movie2 = Movie.objects.get(title="Pauvre Pierrot")
+        movie1 = Movie.objects.get(title="The Ocean Waif")
+        movie2 = Movie.objects.get(title="Making a Living")
 
         def get_embedding(text):
             response = client.embeddings.create(
